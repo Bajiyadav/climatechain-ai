@@ -76,3 +76,16 @@ Open **`http://localhost:8001`** in your browser.
 * **UN COP 31 Aligned** (Paris Agreement Article 6.2 / 6.4)
 * **ISO 14064-2 Greenhouse Gas MRV Protocol**
 * **ERC-1155 Multi-Token Standard** for Multi-Vintage Carbon Assets
+
+---
+
+## 🏛️ IEEE Blockchain Türkiye Group & Academic Collaboration
+Approved by **IEEE Blockchain** and the **IEEE Türkiye Section**, the group collaborates across universities and industries to support, research, and coordinate blockchain initiatives in Türkiye.
+
+### Coordinating Leadership:
+* **Chair:** **Prof. Dr. Şeref Sağıroğlu** (Gazi University; [ss@gazi.edu.tr](mailto:ss@gazi.edu.tr))
+* **Co-Chair (Industries):** **Dr. Güven Fidan** (MindMons Technologies)
+* **Co-Chair (Universities):** **Prof. Dr. Sedat Akleylek** (University of Tartu; [akleylek@gmail.com](mailto:akleylek@gmail.com))
+
+*Please communicate with the leadership team for further information, collaboration, organizational activities, and joint research projects.*
+

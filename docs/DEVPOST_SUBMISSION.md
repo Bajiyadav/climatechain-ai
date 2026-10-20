@@ -107,7 +107,28 @@ Run tests:
 
 ---
 
-## 👥 Team & IEEE Hackathon Alignment
-* **Author:** Baji Baddela
-* **Organizers:** IEEE Blockchain Türkiye & Technical Committee
-* **Submission Category:** Blockchain + AI for Social Good (COP 31 Sustainable Tomorrow)
+## 👥 Team & Hackathon Submission
+* **Author / Developer:** Baji Baddela
+* **Submission Category:** Blockchain + AI for Social Good (UN COP 31 Sustainable Tomorrow)
+* **Conference Tracks:** 
+  * Track 1: Carbon Markets & Emissions Transparency
+  * Track 2: Renewable Energy & Energy Trading
+
+---
+
+## 🏛️ IEEE Blockchain Türkiye Leadership & Academic Collaboration
+
+This project is built in direct alignment with the mission of the **IEEE Blockchain Türkiye Group**, established and approved by **IEEE Blockchain** and the **IEEE Türkiye Section** to support, collaborate, and coordinate blockchain innovation, research, and industrial adoption across Türkiye.
+
+### Leadership & Contact Information:
+* **Chair:** **Prof. Dr. Şeref Sağıroğlu**  
+  * *Institution:* Gazi University, Türkiye  
+  * *Email:* [ss@gazi.edu.tr](mailto:ss@gazi.edu.tr)
+* **Co-Chair (Industry):** **Dr. Güven Fidan**  
+  * *Organization:* MindMons Technologies  
+* **Co-Chair (Universities):** **Prof. Dr. Sedat Akleylek**  
+  * *Institution:* University of Tartu  
+  * *Email:* [akleylek@gmail.com](mailto:akleylek@gmail.com)
+
+*For further information, collaboration, organizational initiatives, and joint research projects, please communicate with the leadership team.*
+

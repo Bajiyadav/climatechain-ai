@@ -7,7 +7,7 @@ import P2PEnergyView from './components/P2PEnergyView';
 import CarbonRegistryView from './components/CarbonRegistryView';
 import BlockchainExplorerView from './components/BlockchainExplorerView';
 import CopilotView from './components/CopilotView';
-import { Satellite, Zap, FileText, Layers, Bot } from 'lucide-react';
+import { Satellite, Zap, FileText, Layers, Bot, Users, Mail, X, ExternalLink } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('mrv');
@@ -17,6 +17,7 @@ export default function App() {
   const [creditsData, setCreditsData] = useState(null);
   const [blocksData, setBlocksData] = useState(null);
   const [toasts, setToasts] = useState([]);
+  const [showIeeeModal, setShowIeeeModal] = useState(false);
 
   const addToast = (message, type = 'info') => {
     const id = Date.now() + Math.random();
@@ -191,7 +192,24 @@ export default function App() {
           <div>
             <b>ClimateChain.AI</b> — Official Submission for the <b>IEEE ClimateChain Global Hackathon 2026</b>
             <span style={{ margin: '0 0.5rem' }}>•</span>
-            Organized by IEEE Blockchain Türkiye & Technical Committee
+            <button
+              onClick={() => setShowIeeeModal(true)}
+              style={{
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid var(--border-highlight)',
+                color: 'var(--emerald-light)',
+                borderRadius: 'var(--radius-pill)',
+                padding: '0.2rem 0.65rem',
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem'
+              }}
+            >
+              <Users size={12} /> IEEE Blockchain Türkiye Leadership & Collaboration
+            </button>
           </div>
           <div>
             <span>UN COP 31 Aligned</span>
@@ -202,6 +220,125 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* IEEE Blockchain Türkiye Leadership Modal */}
+      {showIeeeModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(10px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '1.5rem'
+          }}
+          onClick={() => setShowIeeeModal(false)}
+        >
+          <div
+            style={{
+              background: 'linear-gradient(145deg, #071811, #040d09)',
+              border: '2px solid var(--emerald-primary)',
+              boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)',
+              borderRadius: 'var(--radius-xl)',
+              maxWidth: '680px',
+              width: '100%',
+              padding: '2.25rem',
+              color: 'var(--text-main)',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowIeeeModal(false)}
+              style={{
+                position: 'absolute',
+                top: '1.25rem',
+                right: '1.25rem',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: 'none',
+                color: 'var(--text-main)',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            <div style={{ textAlign: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '1.25rem', marginBottom: '1.25rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid var(--emerald-primary)', padding: '0.3rem 0.85rem', borderRadius: 'var(--radius-pill)', color: 'var(--emerald-light)', fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.65rem' }}>
+                Approved by IEEE Blockchain & IEEE Türkiye Section
+              </div>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-main)' }}>
+                IEEE Blockchain Türkiye Group
+              </h2>
+              <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '540px', margin: '0.4rem auto 0', lineHeight: 1.5 }}>
+                A collaborative initiative bridging Turkish universities and industries to advance blockchain research, activities, paper publications, policies, and production implementations.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Chair */}
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '0.9rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--emerald-light)', fontWeight: 800 }}>Group Chair</div>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800 }}>Prof. Dr. Şeref Sağıroğlu</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Gazi University, Türkiye</div>
+                </div>
+                <a
+                  href="mailto:ss@gazi.edu.tr"
+                  className="btn-emerald"
+                  style={{ padding: '0.4rem 0.85rem', fontSize: '0.78rem', textDecoration: 'none' }}
+                >
+                  <Mail size={14} /> ss@gazi.edu.tr
+                </a>
+              </div>
+
+              {/* Co-Chair Industry */}
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '0.9rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--cyan-accent)', fontWeight: 800 }}>Co-Chair (Industries)</div>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800 }}>Dr. Güven Fidan</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>MindMons Technologies</div>
+                </div>
+                <span className="badge-verified" style={{ background: 'rgba(6, 182, 212, 0.15)', borderColor: 'var(--cyan-accent)', color: 'var(--cyan-accent)' }}>
+                  Industry Partner
+                </span>
+              </div>
+
+              {/* Co-Chair Universities */}
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', padding: '0.9rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--gold-accent)', fontWeight: 800 }}>Co-Chair (Universities)</div>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800 }}>Prof. Dr. Sedat Akleylek</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>University of Tartu</div>
+                </div>
+                <a
+                  href="mailto:akleylek@gmail.com"
+                  className="btn-cyber-gold"
+                  style={{ padding: '0.4rem 0.85rem', fontSize: '0.78rem', textDecoration: 'none' }}
+                >
+                  <Mail size={14} /> akleylek@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)', textAlign: 'center', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              🤝 <i>Please communicate with the leadership for further information, collaboration, organization, and joint projects.</i>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Stack */}
       <div className="toast-stack">

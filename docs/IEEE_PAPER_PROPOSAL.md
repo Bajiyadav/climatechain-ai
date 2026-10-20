@@ -68,3 +68,14 @@ We implemented the system in Python (FastAPI, scikit-learn, cryptography) and So
 
 ## 4. Conclusion
 ClimateChain demonstrates that pairing automated Machine Learning oracles with immutable blockchain consensus provides the cryptographic certainty necessary to revitalize global carbon markets under UN COP 31 while democratizing decentralized clean energy microgrids. Future work will deploy zero-knowledge zk-SNARKs for private industrial telemetry verification.
+
+---
+
+## 5. Acknowledgements & Institutional Collaboration
+The authors gratefully acknowledge the guidance and collaborative framework provided by the **IEEE Blockchain Türkiye Group**, established and approved by **IEEE Blockchain** and the **IEEE Türkiye Section** to advance blockchain research, standardization, and industrial implementations. We recognize the leadership of:
+* **Prof. Dr. Şeref Sağıroğlu** (Chair, Gazi University; `ss@gazi.edu.tr`)
+* **Dr. Güven Fidan** (Co-Chair from Industries, MindMons Technologies)
+* **Prof. Dr. Sedat Akleylek** (Co-Chair from Universities, University of Tartu; `akleylek@gmail.com`)
+
+For joint research, standards development, or collaborative projects in decentralized energy and climate intelligence, inquiries may be directed to the IEEE Blockchain Türkiye coordinating committee.
+
