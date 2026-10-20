@@ -11,6 +11,7 @@ import { Satellite, Zap, FileText, Layers, Bot } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('mrv');
+  const [currentIdentity, setCurrentIdentity] = useState('0xEnterprise_Amazon');
   const [stats, setStats] = useState(null);
   const [market, setMarket] = useState(null);
   const [creditsData, setCreditsData] = useState(null);
@@ -99,7 +100,14 @@ export default function App() {
 
       <div className="app-container">
         {/* Navigation Header */}
-        <Header stats={stats} />
+        <Header
+          stats={stats}
+          currentIdentity={currentIdentity}
+          onSelectIdentity={(id) => {
+            setCurrentIdentity(id);
+            addToast(`Switched active Web3 identity to ${id.slice(0, 16)}...`, 'info');
+          }}
+        />
 
         {/* Global Key Metrics Dashboard */}
         <MetricsGrid stats={stats} />
@@ -144,13 +152,20 @@ export default function App() {
 
         {/* Active View */}
         <main>
-          {activeTab === 'mrv' && <MrvOracleView onToast={addToast} />}
+          {activeTab === 'mrv' && (
+            <MrvOracleView
+              onToast={addToast}
+              currentIdentity={currentIdentity}
+              onMintSuccess={refreshAll}
+            />
+          )}
           {activeTab === 'market' && (
             <P2PEnergyView
               market={market}
               onRefresh={fetchMarket}
               onTradeSuccess={refreshAll}
               onToast={addToast}
+              currentIdentity={currentIdentity}
             />
           )}
           {activeTab === 'credits' && (
@@ -158,6 +173,7 @@ export default function App() {
               creditsData={creditsData}
               onRefresh={refreshAll}
               onToast={addToast}
+              currentIdentity={currentIdentity}
             />
           )}
           {activeTab === 'blockchain' && (

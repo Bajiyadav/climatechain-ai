@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import { Leaf, Flame, ShieldCheck, Lock, Award, FileCheck } from 'lucide-react';
+import { Leaf, Flame, ShieldCheck, Lock, Award, FileCheck, Printer, CheckCircle2, X, ExternalLink, QrCode } from 'lucide-react';
 
-export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) {
+export default function CarbonRegistryView({ creditsData, onRefresh, onToast, currentIdentity = '0xEnterprise_Amazon' }) {
   const [mintForm, setMintForm] = useState({
     projectName: 'Izmir Aegean Coastal Wind Energy Project',
     projectType: 'Wind Energy Clean Displacement',
     co2Tonnage: 120.0,
-    recipientAddress: '0xProsumer_WindMicrogrid_Izmir',
+    recipientAddress: currentIdentity,
     vintageYear: 2026
   });
 
   const [retireForm, setRetireForm] = useState({
     certificateId: '',
-    retireeAddress: '0xEnterprise_Amazon',
+    retireeAddress: currentIdentity,
     reason: 'Scope 1 & Scope 2 Decarbonization for AI Compute Data Center'
   });
 
   const [minting, setMinting] = useState(false);
   const [retiring, setRetiring] = useState(false);
+  const [selectedCertificate, setSelectedCertificate] = useState(null); // For ESG Modal
 
   const activeCredits = creditsData?.active_credits || [];
   const retiredCredits = creditsData?.retired_credits || [];
@@ -34,7 +35,7 @@ export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) 
           project_name: mintForm.projectName,
           project_type: mintForm.projectType,
           co2_tonnage: parseFloat(mintForm.co2Tonnage),
-          recipient_address: mintForm.recipientAddress,
+          recipient_address: mintForm.recipientAddress || currentIdentity,
           vintage_year: parseInt(mintForm.vintageYear),
           oracle_confidence: 0.95
         })
@@ -67,7 +68,7 @@ export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           certificate_id: retireForm.certificateId,
-          retiree_address: retireForm.retireeAddress,
+          retiree_address: retireForm.retireeAddress || currentIdentity,
           reason: retireForm.reason
         })
       });
@@ -79,6 +80,18 @@ export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) 
 
       onToast(`🔥 Certificate ${retireForm.certificateId} Permanently Locked & Retired!`, 'success');
       onRefresh();
+
+      // Automatically open the official ESG certificate
+      const retiredItem = data.proof_of_retirement || {
+        certificate_id: retireForm.certificateId,
+        retiree_address: retireForm.retireeAddress,
+        reason: retireForm.reason,
+        co2_tonnage: 120.0,
+        project_name: 'Verified Clean Project',
+        burn_address: '0x0000000000000000000000000000000000000000',
+        block_index: data.block_index
+      };
+      setSelectedCertificate(retiredItem);
     } catch (err) {
       onToast('Failed to retire certificate', 'danger');
     } finally {
@@ -291,7 +304,13 @@ export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) 
                     </td>
                     <td>
                       {c.retired ? (
-                        <span className="hash-tag font-mono">{(c.proof_of_retirement_hash || '0xHASH').slice(0, 20)}...</span>
+                        <button
+                          onClick={() => setSelectedCertificate(c)}
+                          className="btn-cyber-gold"
+                          style={{ padding: '0.25rem 0.65rem', fontSize: '0.72rem' }}
+                        >
+                          📜 View ESG Certificate
+                        </button>
                       ) : (
                         <span style={{ color: 'var(--text-dim)', fontSize: '0.82rem' }}>Available for Trading</span>
                       )}
@@ -303,6 +322,162 @@ export default function CarbonRegistryView({ creditsData, onRefresh, onToast }) 
           </table>
         </div>
       </div>
+
+      {/* Official Cryptographic Certificate of Retirement Modal */}
+      {selectedCertificate && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(10px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '1.5rem'
+          }}
+          onClick={() => setSelectedCertificate(null)}
+        >
+          <div
+            style={{
+              background: 'linear-gradient(145deg, #071811, #040d09)',
+              border: '2px solid var(--emerald-primary)',
+              boxShadow: '0 0 50px rgba(16, 185, 129, 0.4), inset 0 0 30px rgba(16, 185, 129, 0.08)',
+              borderRadius: 'var(--radius-xl)',
+              maxWidth: '680px',
+              width: '100%',
+              padding: '2.5rem',
+              color: 'var(--text-main)',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedCertificate(null)}
+              style={{
+                position: 'absolute',
+                top: '1.25rem',
+                right: '1.25rem',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: 'none',
+                color: 'var(--text-main)',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            {/* Certificate Header */}
+            <div style={{ textAlign: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid var(--emerald-primary)', padding: '0.35rem 1rem', borderRadius: 'var(--radius-pill)', color: 'var(--emerald-light)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.85rem' }}>
+                <CheckCircle2 size={14} /> Official Proof of Decarbonization
+              </div>
+              <h2 style={{ fontSize: '1.6rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
+                CRYPTOGRAPHIC CERTIFICATE OF CARBON RETIREMENT
+              </h2>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.3rem' }}>
+                Issued via ClimateChain Decentralized Autonomous Ledger • IEEE ClimateChain 2026
+              </div>
+            </div>
+
+            {/* Certificate Details Body */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.9rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Certificate Serial ID</div>
+                  <div className="font-mono text-cyan" style={{ fontSize: '1.05rem', fontWeight: 700 }}>
+                    {selectedCertificate.certificate_id}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Offset Volume</div>
+                  <div className="font-mono text-emerald" style={{ fontSize: '1.3rem', fontWeight: 800 }}>
+                    {selectedCertificate.co2_tonnage} tCO2e
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Retiring Beneficiary</div>
+                  <div className="font-mono" style={{ fontSize: '0.88rem', fontWeight: 700 }}>
+                    {selectedCertificate.retiree_address || selectedCertificate.owner || 'Amazon AI Compute Hub'}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Compliance Standards</div>
+                  <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--emerald-light)' }}>
+                    ISO 14064-2 & Paris Agreement Art. 6
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Audit Justification Statement</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', background: 'rgba(0, 0, 0, 0.4)', padding: '0.65rem 0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                  "{selectedCertificate.reason || 'Scope 1 & Scope 2 Decarbonization for AI Compute Data Center'}"
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Permanent Burn Contract (Double-Counting Lock)</div>
+                <div className="hash-tag font-mono" style={{ color: 'var(--gold-accent)' }}>
+                  0x0000000000000000000000000000000000000000 (Immutable Null Sink)
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Cryptographic Proof Hash</div>
+                <div className="hash-tag font-mono">
+                  {selectedCertificate.proof_of_retirement_hash || '0xPROOF_7f3b890a21ce45d9e8712390847291a4'}
+                </div>
+              </div>
+            </div>
+
+            {/* Certificate Footer Actions */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                Timestamped on-chain in Block #{selectedCertificate.block_index || 'Genesis'}
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.65rem' }}>
+                <button
+                  onClick={() => {
+                    window.print();
+                  }}
+                  className="btn-emerald"
+                  style={{ padding: '0.45rem 1rem', fontSize: '0.82rem' }}
+                >
+                  <Printer size={15} /> Print / Export PDF
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(JSON.stringify(selectedCertificate, null, 2));
+                    onToast('Cryptographic JSON Proof Copied to Clipboard!', 'success');
+                  }}
+                  className="btn-cyber-gold"
+                  style={{ padding: '0.45rem 1rem', fontSize: '0.82rem' }}
+                >
+                  Copy Proof Hash
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

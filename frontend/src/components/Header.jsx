@@ -1,7 +1,23 @@
-import React from 'react';
-import { Globe, ShieldCheck, Zap, Layers, Activity } from 'lucide-react';
+import React, { useState } from 'react';
+import { Globe, ShieldCheck, Zap, Layers, UserCheck, ChevronDown, Wallet } from 'lucide-react';
 
-export default function Header({ stats }) {
+export const DEFAULT_IDENTITIES = [
+  { id: '0xProsumer_SolarFarm_Adana', name: 'Adana Solar Farm', role: 'Renewable Prosumer', icon: '☀️' },
+  { id: '0xProsumer_WindMicrogrid_Izmir', name: 'Izmir Coastal Wind', role: 'Wind Prosumer', icon: '💨' },
+  { id: '0xEnterprise_Amazon', name: 'Amazon AI Data Center', role: 'ESG Clean Buyer', icon: '🏢' },
+  { id: '0xAI_Oracle_Coordinator', name: 'AI MRV Coordinator', role: 'Oracle Attestation', icon: '🤖' },
+  { id: '0xIEEE_Validator_Node_01', name: 'IEEE Genesis Validator', role: 'PoAS Validator', icon: '🛡️' }
+];
+
+export default function Header({ stats, currentIdentity, onSelectIdentity }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const activeObj = DEFAULT_IDENTITIES.find(i => i.id === currentIdentity) || {
+    id: currentIdentity,
+    name: 'Custom Web3 Wallet',
+    role: 'Participant',
+    icon: '🔑'
+  };
+
   return (
     <header className="app-header">
       <div className="brand-section">
@@ -21,6 +37,91 @@ export default function Header({ stats }) {
       </div>
 
       <div className="header-hud">
+        {/* Web3 Identity / Role Selector */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="hud-chip"
+            style={{
+              cursor: 'pointer',
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid var(--emerald-primary)',
+              color: 'var(--text-main)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.45rem 0.85rem'
+            }}
+            title="Switch Web3 Node Identity"
+          >
+            <span style={{ fontSize: '1rem' }}>{activeObj.icon}</span>
+            <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
+              <div style={{ fontSize: '0.7rem', color: 'var(--emerald-light)', fontWeight: 600 }}>
+                {activeObj.role}
+              </div>
+              <div className="font-mono" style={{ fontSize: '0.78rem', fontWeight: 700 }}>
+                {activeObj.id.length > 22 ? `${activeObj.id.slice(0, 14)}...${activeObj.id.slice(-4)}` : activeObj.id}
+              </div>
+            </div>
+            <ChevronDown size={14} className="text-emerald" style={{ marginLeft: '0.2rem' }} />
+          </button>
+
+          {dropdownOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '110%',
+                right: 0,
+                width: '320px',
+                background: '#071610',
+                border: '1px solid var(--border-highlight)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.85), 0 0 20px rgba(16,185,129,0.2)',
+                zIndex: 100,
+                padding: '0.5rem',
+                backdropFilter: 'blur(20px)'
+              }}
+            >
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', padding: '0.4rem 0.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Switch Active Web3 Node Identity:
+              </div>
+              {DEFAULT_IDENTITIES.map(item => (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    onSelectIdentity(item.id);
+                    setDropdownOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '0.55rem 0.65rem',
+                    borderRadius: 'var(--radius-sm)',
+                    cursor: 'pointer',
+                    background: item.id === currentIdentity ? 'rgba(16, 185, 129, 0.2)' : 'transparent',
+                    border: item.id === currentIdentity ? '1px solid var(--border-highlight)' : '1px solid transparent',
+                    transition: 'var(--transition)'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = item.id === currentIdentity ? 'rgba(16, 185, 129, 0.2)' : 'transparent'}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.85rem', color: item.id === currentIdentity ? 'var(--emerald-light)' : 'var(--text-main)' }}>
+                      {item.name}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                      {item.role} • <span className="font-mono">{item.id.slice(0, 18)}...</span>
+                    </div>
+                  </div>
+                  {item.id === currentIdentity && <UserCheck size={16} className="text-emerald" />}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="hud-chip">
           <span className="pulse-indicator"></span>
           <span className="text-muted" style={{ fontSize: '0.78rem' }}>Consensus:</span>
@@ -52,3 +153,4 @@ export default function Header({ stats }) {
     </header>
   );
 }
+

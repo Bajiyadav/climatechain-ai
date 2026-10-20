@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Satellite, ShieldAlert, CheckCircle2, AlertTriangle, Cpu, Radio } from 'lucide-react';
 
-export default function MrvOracleView({ onToast }) {
+export default function MrvOracleView({ onToast, currentIdentity = '0xProsumer_SolarFarm_Adana', onMintSuccess }) {
   const [formData, setFormData] = useState({
     projectType: 'Solar PV Microgrid',
     reportedTonnage: 2.5,
@@ -14,6 +14,39 @@ export default function MrvOracleView({ onToast }) {
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [minting, setMinting] = useState(false);
+  const [mintResult, setMintResult] = useState(null);
+
+  const handleDirectMint = async () => {
+    if (!result || !result.is_valid) return;
+    setMinting(true);
+    try {
+      const res = await fetch('/api/carbon-credits/mint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project_name: `${formData.projectType} Facility`,
+          project_type: formData.projectType,
+          co2_tonnage: result.verified_tonnage,
+          recipient_address: currentIdentity,
+          vintage_year: 2026,
+          oracle_confidence: result.confidence_score
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        onToast(data.detail || 'Minting failed', 'danger');
+        return;
+      }
+      setMintResult(data);
+      onToast(`🌱 Verified Credits Minted into Block #${data.block_index}!`, 'success');
+      if (onMintSuccess) onMintSuccess();
+    } catch (err) {
+      onToast('Failed to mint carbon credit on-chain', 'danger');
+    } finally {
+      setMinting(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -268,6 +301,33 @@ export default function MrvOracleView({ onToast }) {
                     <li key={i}>{a}</li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {/* Direct On-Chain Minting Action */}
+            {result.is_valid && (
+              <div style={{ marginTop: '0.5rem', paddingTop: '0.85rem', borderTop: '1px solid var(--border-subtle)' }}>
+                {mintResult ? (
+                  <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid var(--emerald-primary)', borderRadius: 'var(--radius-sm)', padding: '0.75rem 1rem' }}>
+                    <div style={{ fontWeight: 800, color: 'var(--emerald-light)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem' }}>
+                      <CheckCircle2 size={16} /> Minted into Block #{mintResult.block_index}!
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-main)', marginTop: '0.2rem' }}>
+                      Certificate ID: <span className="font-mono text-cyan">{mintResult.certificate_id}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleDirectMint}
+                    disabled={minting}
+                    className="btn-emerald"
+                    style={{ width: '100%', justifyContent: 'center' }}
+                  >
+                    <Cpu size={18} />
+                    {minting ? 'Mining Block on Chain...' : `Mint ${result.verified_tonnage.toFixed(2)} tCO2e On-Chain Now`}
+                  </button>
+                )}
               </div>
             )}
           </div>
