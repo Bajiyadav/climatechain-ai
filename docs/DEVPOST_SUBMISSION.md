@@ -9,7 +9,7 @@
 > **Team:** Baji Baddela  
 > **Repository:** [https://github.com/Bajiyadav/climatechain-ai](https://github.com/Bajiyadav/climatechain-ai)  
 > **Live Web App / Demo:** [https://climatechain-ai.vercel.app](https://climatechain-ai.vercel.app)  
-> **Video Demo Link:** [YOUR_VIDEO_LINK_HERE]  
+> **Video Demo Link:** [https://youtu.be/YfWt6OrgIRA](https://youtu.be/YfWt6OrgIRA)  
 
 ---
 

@@ -8,6 +8,9 @@
 [![Tests](https://img.shields.io/badge/Tests-16%2F16_Passed_(100%25)-success?style=for-the-badge&logo=pytest&logoColor=white)](https://github.com/Bajiyadav/climatechain-ai)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
+[![Video Demo](https://img.shields.io/badge/YouTube-Video_Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/YfWt6OrgIRA)
+[![Live Demo](https://img.shields.io/badge/Vercel-Live_Demo-black?style=for-the-badge&logo=vercel&logoColor=white)](https://climatechain-ai.vercel.app)
+
 <p align="center">
   <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/Solidity-363636?style=flat-square&logo=solidity&logoColor=white" alt="Solidity" />
