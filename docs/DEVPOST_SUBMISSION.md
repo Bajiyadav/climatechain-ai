@@ -7,7 +7,9 @@
 > 2. **Renewable Energy & Energy Trading** (Decentralized Prosumer Microgrid & Dynamic AMM Tariff)  
 > **Prize Targets:** 1st Prize ($1,500 Cash + IEEE Certificate of Merit + IEEE Senior Member Nomination)  
 > **Team:** Baji Baddela  
-> **Repository:** Public GitHub Repository with full source code, smart contracts, ML models, and test suite.
+> **Repository:** [https://github.com/Bajiyadav/climatechain-ai](https://github.com/Bajiyadav/climatechain-ai)  
+> **Live Web App / Demo:** [https://climatechain-ai.vercel.app](https://climatechain-ai.vercel.app)  
+> **Video Demo Link:** [YOUR_VIDEO_LINK_HERE]  
 
 ---
 
