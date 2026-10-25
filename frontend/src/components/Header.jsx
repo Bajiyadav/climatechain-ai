@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Globe, ShieldCheck, Zap, Layers, UserCheck, ChevronDown, Wallet } from 'lucide-react';
 
 export const DEFAULT_IDENTITIES = [
@@ -11,6 +11,22 @@ export const DEFAULT_IDENTITIES = [
 
 export default function Header({ stats, currentIdentity, onSelectIdentity }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   const activeObj = DEFAULT_IDENTITIES.find(i => i.id === currentIdentity) || {
     id: currentIdentity,
     name: 'Custom Web3 Wallet',
@@ -38,7 +54,7 @@ export default function Header({ stats, currentIdentity, onSelectIdentity }) {
 
       <div className="header-hud">
         {/* Web3 Identity / Role Selector */}
-        <div style={{ position: 'relative' }}>
+        <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="hud-chip"
@@ -70,20 +86,20 @@ export default function Header({ stats, currentIdentity, onSelectIdentity }) {
             <div
               style={{
                 position: 'absolute',
-                top: '110%',
-                right: 0,
-                width: '320px',
+                top: 'calc(100% + 8px)',
+                left: 0,
+                width: '330px',
                 background: '#071610',
-                border: '1px solid var(--border-highlight)',
+                border: '1px solid var(--emerald-primary)',
                 borderRadius: 'var(--radius-md)',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.85), 0 0 20px rgba(16,185,129,0.2)',
-                zIndex: 100,
-                padding: '0.5rem',
-                backdropFilter: 'blur(20px)'
+                boxShadow: '0 20px 45px rgba(0,0,0,0.9), 0 0 25px rgba(16,185,129,0.3)',
+                zIndex: 1000,
+                padding: '0.65rem',
+                backdropFilter: 'blur(25px)'
               }}
             >
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', padding: '0.4rem 0.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Switch Active Web3 Node Identity:
+              <div style={{ fontSize: '0.72rem', color: 'var(--emerald-light)', padding: '0.4rem 0.6rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700, borderBottom: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '0.4rem' }}>
+                Switch Active Web3 Node Identity
               </div>
               {DEFAULT_IDENTITIES.map(item => (
                 <div
@@ -95,24 +111,35 @@ export default function Header({ stats, currentIdentity, onSelectIdentity }) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.6rem',
-                    padding: '0.55rem 0.65rem',
+                    gap: '0.65rem',
+                    padding: '0.65rem 0.75rem',
                     borderRadius: 'var(--radius-sm)',
                     cursor: 'pointer',
-                    background: item.id === currentIdentity ? 'rgba(16, 185, 129, 0.2)' : 'transparent',
+                    background: item.id === currentIdentity ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.02)',
                     border: item.id === currentIdentity ? '1px solid var(--border-highlight)' : '1px solid transparent',
-                    transition: 'var(--transition)'
+                    transition: 'var(--transition)',
+                    marginBottom: '0.25rem'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = item.id === currentIdentity ? 'rgba(16, 185, 129, 0.2)' : 'transparent'}
+                  onMouseEnter={(e) => {
+                    if (item.id !== currentIdentity) {
+                      e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)';
+                      e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (item.id !== currentIdentity) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                      e.currentTarget.style.borderColor = 'transparent';
+                    }
+                  }}
                 >
-                  <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                  <span style={{ fontSize: '1.35rem' }}>{item.icon}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: '0.85rem', color: item.id === currentIdentity ? 'var(--emerald-light)' : 'var(--text-main)' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.88rem', color: item.id === currentIdentity ? 'var(--emerald-light)' : 'var(--text-main)' }}>
                       {item.name}
                     </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                      {item.role} • <span className="font-mono">{item.id.slice(0, 18)}...</span>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
+                      {item.role} • <span className="font-mono" style={{ color: 'var(--cyan-accent)' }}>{item.id.slice(0, 18)}...</span>
                     </div>
                   </div>
                   {item.id === currentIdentity && <UserCheck size={16} className="text-emerald" />}
